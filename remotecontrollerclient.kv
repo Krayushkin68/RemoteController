@@ -1,0 +1,175 @@
+#:kivy 1.0
+#:import kivy kivy
+#:import ScreenManager kivy.uix.screenmanager.ScreenManager
+#:import Screen kivy.uix.screenmanager.ScreenManager
+#:import MDTextField kivymd.uix.textfield
+#:import MDRaisedButton kivymd.uix.button
+#:import MDRoundFlatButton kivymd.uix.button
+#:import MDRaisedButton kivymd.uix.button
+#:import MDRectangleFlatButton kivymd.uix.button
+#:import MDFloatingActionButton kivymd.uix.button
+#:import MDScreen kivymd.uix.screen
+#:import MDToolbar kivymd.uix.toolbar
+#:import MDGridLayout kivymd.uix.gridlayout
+
+<ControlScreen@MDScreen>:
+    id: control_screen
+    BoxLayout:
+        id: control_main_box
+        orientation: "vertical"
+        size_hint: 1, 1
+        spacing: 20
+        MDToolbar:
+            title: "Remote Controller"
+            size_hint: 1, 0.1
+            elevation: 10
+            left_action_items: [["chevron-left-circle-outline", lambda x: app.back()]]
+        RelativeLayout:
+            size_hint: 0.8,0.1
+            pos_hint: {"center_x": .5}
+            #spacing:15
+            MDTextField:
+                id: sense
+                text: "10"
+                multiline: False
+                hint_text: u"Чувствительность"
+                #size: 400,95
+                size_hint: 0.3,1
+                disabled: True
+                pos_hint: {"center_x": .4, "center_y": .3}
+            MDFloatingActionButton:
+                icon: "plus"
+                opposite_colors: False
+                elevation_normal: 5
+                md_bg_color: app.theme_cls.primary_color
+                pos_hint: {"center_x": .85, "center_y": .33}
+                size: 110,110
+                on_press: sense.text = str(int(sense.text)+1)
+                on_release: app.set_sense(int(sense.text))
+            MDFloatingActionButton:
+                icon: "minus"
+                opposite_colors: False
+                md_bg_color: app.theme_cls.primary_color
+                elevation_normal: 5
+                pos_hint: {"center_x": .7, "center_y": .33}
+                size: 110,110
+                on_press: sense.text = str(int(sense.text)-1)
+                on_release: app.set_sense(int(sense.text))
+        RelativeLayout:
+            id: box_with_grid
+            size_hint: 1,1
+            MDGridLayout:
+                id: grid
+                cols: 3
+                rows: 3
+                size_hint: 0.8,1
+                pos_hint: {"center_x": 0.45}
+                MDRectangleFlatButton:
+                    size_hint: 0.3,0.3
+                    on_press: app.set_command('LeftUp')
+                    on_release: app.set_state('normal')
+                MDRectangleFlatButton:
+                    size_hint: 0.3,0.3
+                    on_press: app.set_command('Up')
+                    on_release: app.set_state('normal')
+                MDRectangleFlatButton:
+                    size_hint: 0.3,0.3
+                    on_press: app.set_command('RightUp')
+                    on_release: app.set_state('normal')
+                MDRectangleFlatButton:
+                    size_hint: 0.3,0.3
+                    on_press: app.set_command('Left')
+                    on_release: app.set_state('normal')
+                Widget:
+                    size_hint: 0.3,0.3
+                #MDRaisedButton:
+                    #id: drag_btn
+                    #size_hint: 0.3,0.3
+                    #md_bg_color: 0.9,0.9,0.9,1
+                    #on_press: app.set_drag()
+                MDRectangleFlatButton:
+                    size_hint: 0.3,0.3
+                    on_press: app.set_command('Right')
+                    on_release: app.set_state('normal')
+                MDRectangleFlatButton:
+                    size_hint: 0.3,0.3
+                    on_press: app.set_command('LeftDown')
+                    on_release: app.set_state('normal')
+                MDRectangleFlatButton:
+                    size_hint: 0.3,0.3
+                    on_press: app.set_command('Down')
+                    on_release: app.set_state('normal')
+                MDRectangleFlatButton:
+                    size_hint: 0.3,0.3
+                    on_press: app.set_command('RightDown')
+                    on_release: app.set_state('normal')
+            BoxLayout:
+                size_hint: 0.1,1
+                orientation: "vertical"
+                pos_hint: {"right": 1}
+                MDRectangleFlatButton:
+                    size_hint: 1,0.5
+                    on_press: app.set_command('ScrollUp')
+                    on_release: app.set_state('normal')
+                MDRectangleFlatButton:
+                    size_hint: 1,0.5
+                    on_press: app.set_command('ScrollDown')
+                    on_release: app.set_state('normal')
+
+        Widget:
+            size_hint: 0.9,0.1
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: 0.9,0.2
+            pos_hint: {"center_x": .5}
+            MDRectangleFlatButton:
+                size_hint: 0.5,1
+                on_press: app.send_command('LeftClick')
+            MDRectangleFlatButton:
+                size_hint: 0.5,1
+                on_press: app.send_command('RightClick')
+        Widget:
+            size_hint: 1,0.1
+
+<ConnectScreen@MDScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        size_hint: 1, 1
+        spacing: 10
+        MDToolbar:
+            title: "Remote Controller"
+            size_hint: 1, 0.1
+            elevation: 10
+        Widget:
+            size_hint: 1, 0.26
+        MDTextField:
+            id: text_ip
+            text: "192.168.100.2"
+            hint_text: u"IP адрес сервера:"
+            multiline: False
+            font_size: 48
+            halign: "center"
+            valign: "center"
+            size_hint: 0.8, 0.07
+            pos_hint: {"center_x": .5}
+        MDTextField:
+            id: text_port
+            text: "5555"
+            hint_text: u"Порт сервера:"
+            multiline: False
+            font_size: 48
+            halign: "center"
+            valign: "center"
+            size_hint: 0.8, 0.07
+            pos_hint: {"center_x": .5}
+        Widget:
+            size_hint: 1, 0.1
+        MDRoundFlatButton:
+            text: u"Подключиться"
+            font_size: 36
+            size_hint: 0.8, 0.15
+            pos_hint: {"center_x": .5}
+            on_press: app.connect_server(text_ip.text,text_port.text)
+        Widget:
+            size_hint: 1, 0.25
+
