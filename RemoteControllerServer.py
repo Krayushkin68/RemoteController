@@ -1,25 +1,22 @@
 import pyautogui as g
-from time import sleep
 import socket as s
-from asyncio import *
 import re
 
-g.PAUSE=0.01
-g.FAILSAFE=False
-max_x,max_y=g.size()
+g.PAUSE = 0.01
+g.FAILSAFE = False
+max_x, max_y = g.size()
 
 # Содаем сокет
 serversocket = s.socket(s.AF_INET, s.SOCK_STREAM)
-# server_ip = '192.168.100.2'
 server_ip = s.gethostbyname(s.gethostname())
 set_ip = input(f'Введите ip адрес сервера: \n(по умолчанию: {server_ip}\nдля выбора ip по умолчанию нажмите Enter)\n')
-if re.match('\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}',set_ip) :
+if re.match(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', set_ip):
     server_ip = set_ip
 elif set_ip:
     print('Неверный формат ip адреса, использую адрес по умолчанию...')
 server_port = 5555
 try:
-    serversocket.bind((server_ip,server_port))
+    serversocket.bind((server_ip, server_port))
     serversocket.listen()
     print(f'Сервер запущен!\nip:   {server_ip}\nport: {server_port}')
 except Exception:
@@ -86,7 +83,7 @@ def handle_client(client):
             g.scroll(move_step)
         elif msg == 'ScrollDown':
             g.scroll(-move_step)
-        elif re.match('Sense:*',msg):
+        elif re.match('Sense:*', msg):
             move_step = int(msg.split()[1])
         else:
             continue
